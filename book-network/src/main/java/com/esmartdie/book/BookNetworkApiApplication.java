@@ -1,9 +1,17 @@
 package com.esmartdie.book;
 
+import com.esmartdie.book.role.IRoleRepository;
+import com.esmartdie.book.role.Role;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableAsync;
+
+import javax.management.relation.RoleResult;
+
+import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -12,6 +20,17 @@ public class BookNetworkApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BookNetworkApiApplication.class, args);
+	}
+
+	@Bean
+	public CommandLineRunner runner(IRoleRepository roleRepository){
+		return args -> {
+			if(roleRepository.findByName("USER").isEmpty()){
+				roleRepository.save(
+						Role.builder().name("USER").build()
+				);
+			}
+		};
 	}
 
 }

@@ -44,7 +44,7 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    private String generateToken(HashMap<String,Object> extraClaims, UserDetails userDetails) {
+    public String generateToken(HashMap<String, Object> extraClaims, UserDetails userDetails) {
         var authorities = userDetails.getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)

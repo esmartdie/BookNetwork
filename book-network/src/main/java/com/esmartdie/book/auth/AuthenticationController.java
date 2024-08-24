@@ -5,6 +5,7 @@ import jakarta.mail.MessagingException;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -24,4 +25,17 @@ public class AuthenticationController {
         authService.register(request);
         return ResponseEntity.accepted().build();
     }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> authenticate(
+            @RequestBody @Valid AuthenticationRequest request){
+
+        return ResponseEntity.ok(authService.authenticate(request));
+    }
+
+    @GetMapping("/activate-account")
+    public void confirm(@RequestParam String token){
+        authService.activateAccount(token);
+    }
+
 }
