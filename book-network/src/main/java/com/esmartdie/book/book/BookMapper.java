@@ -1,5 +1,6 @@
 package com.esmartdie.book.book;
 
+import com.esmartdie.book.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +29,18 @@ public class BookMapper {
                 .archived(book.isArchived())
                 .shareable(book.isShareable())
                 .owner(book.getOwner().getFullName())
+                .build();
+    }
+
+    public BorrowedBookResponse toBorrowedBookResponse(BookTransactionHistory history) {
+        return BorrowedBookResponse.builder()
+                .id(history.getBook().getId())
+                .title(history.getBook().getTitle())
+                .authorName(history.getBook().getAuthorName())
+                .isbn(history.getBook().getIsbn())
+                .rate(history.getBook().getRate())
+                .returned(history.isReturned())
+                .returnApproved(history.isReturned())
                 .build();
     }
 }
