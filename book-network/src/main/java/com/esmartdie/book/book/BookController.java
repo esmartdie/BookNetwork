@@ -28,7 +28,7 @@ public class BookController {
         return ResponseEntity.ok(service.save(request, connectedUser));
     }
 
-    @GetMapping
+    @GetMapping("/{book-id}")
     public ResponseEntity<BookResponse> findBookById(
             @PathVariable("book-id") Integer bookId
     ){
@@ -44,7 +44,7 @@ public class BookController {
         return ResponseEntity.ok(service.findAllBooks(page, size, connectedUser));
     }
 
-    @GetMapping
+    @GetMapping("/owner")
     public ResponseEntity<PageResponse<BookResponse>> findAllBooksByOwner(
             @RequestParam (name = "page", defaultValue="0", required = false) int page,
             @RequestParam (name = "page", defaultValue="0", required = false) int size,
@@ -53,12 +53,21 @@ public class BookController {
         return ResponseEntity.ok(service.findAllBooksByOwner(page, size, connectedUser));
     }
 
-    @GetMapping
+    @GetMapping("/borrowed")
     public ResponseEntity<PageResponse<BorrowedBookResponse>> findAllBorrowedBooks(
             @RequestParam (name = "page", defaultValue="0", required = false) int page,
             @RequestParam (name = "page", defaultValue="0", required = false) int size,
             Authentication connectedUser
     ){
         return ResponseEntity.ok(service.findAllBorrowedBooks(page, size, connectedUser));
+    }
+
+    @GetMapping("/returned")
+    public ResponseEntity<PageResponse<BorrowedBookResponse>> findAllReturnedBooks(
+            @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+            @RequestParam(name = "size", defaultValue = "10", required = false) int size,
+            Authentication connectedUser
+    ) {
+        return ResponseEntity.ok(service.findAllReturnedBooks(page, size, connectedUser));
     }
 }
