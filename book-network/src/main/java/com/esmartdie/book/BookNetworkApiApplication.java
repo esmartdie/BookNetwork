@@ -14,7 +14,7 @@ import javax.management.relation.RoleResult;
 import static org.apache.logging.log4j.ThreadContext.isEmpty;
 
 @SpringBootApplication
-@EnableJpaAuditing
+@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableAsync
 public class BookNetworkApiApplication {
 
