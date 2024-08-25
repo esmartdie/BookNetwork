@@ -1,6 +1,7 @@
 package com.esmartdie.book.book;
 
 import com.esmartdie.book.common.PageResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.naming.ldap.PagedResultsControl;
 import java.util.List;
@@ -110,6 +112,17 @@ public class BookController {
             Authentication connectedUser
     ){
         return ResponseEntity.ok(service.approvedReturnedBorrowedBook(bookId, connectedUser));
+    }
+
+    @PostMapping(value="/cover/{book-id}", consumes = "multipart/form-data")
+    public ResponseEntity<?> uploadBookCoverPicture(
+            @PathVariable("book-id") Integer bookId,
+            @Parameter()
+            @RequestPart("file") MultipartFile file,
+            Authentication connectedUser
+    ){
+            service.uploadBookCoverPicture(file, connectedUser, bookId);
+            return ResponseEntity.accepted().build();
     }
 
 }
