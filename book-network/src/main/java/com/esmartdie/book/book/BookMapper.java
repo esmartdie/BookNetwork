@@ -1,5 +1,6 @@
 package com.esmartdie.book.book;
 
+import com.esmartdie.book.file.FileUtils;
 import com.esmartdie.book.history.BookTransactionHistory;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,7 @@ public class BookMapper {
                 .archived(book.isArchived())
                 .shareable(book.isShareable())
                 .owner(book.getOwner().getFullName())
+                .cover(FileUtils.readFileFromLocation(book.getBookCover()))
                 .build();
     }
 
