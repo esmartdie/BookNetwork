@@ -1,9 +1,11 @@
 package com.esmartdie.book.feedback;
 
 import com.esmartdie.book.book.Book;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Component
 public class FeedbackMapper {
 
     public Feedback toFeedback(FeedbackRequest request){
