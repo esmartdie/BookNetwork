@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, CommonModule  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
+  
 })
 export class LoginComponent {
   
