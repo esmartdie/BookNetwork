@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-menu',
@@ -9,17 +11,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MenuComponent implements OnInit{
 
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {}
+
   ngOnInit(): void {
-    const linkColor = document.querySelectorAll('.nav-link');
-    linkColor.forEach( link => {
-      if(window.location.href.endsWith(link.getAttribute('href') || '')){
-        link.classList.add('active');
-      }
-      link.addEventListener('click', ():void =>{
-        linkColor.forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
+
+    if (isPlatformBrowser(this.platformId)) {
+      const linkColor = document.querySelectorAll('.nav-link');
+      linkColor.forEach(link => {
+        if (window.location.href.endsWith(link.getAttribute('href') || '')) {
+          link.classList.add('active');
+        }
+        link.addEventListener('click', (): void => {
+          linkColor.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        });
       });
-    });
+    }
   }
 
   logout(): void {
