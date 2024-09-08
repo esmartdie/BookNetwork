@@ -1,23 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { BookResponse, PageResponseBookResponse } from '../../../../services/models';
 import { BookService } from '../../../../services/services';
-import { Router } from 'express';
+import {Router} from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { BookCardComponent } from '../../components/book-card/book-card.component'; 
 
 @Component({
   selector: 'app-my-books',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, BookCardComponent],
   templateUrl: './my-books.component.html',
   styleUrl: './my-books.component.scss'
 })
 export class MyBooksComponent implements OnInit{
+
   bookResponse: PageResponseBookResponse = {};
   page:number =  0;
   size: number = 5;
   pages: any = [];
-  message: string = '';
-  level: 'success' |'error' = 'success';
 
   constructor(
     private bookService: BookService, 
@@ -30,7 +30,7 @@ export class MyBooksComponent implements OnInit{
   }
 
   private findAllBooks() {
-    this.bookService.findAllBooks({
+    this.bookService.findAllBooksByOwner({
       page: this.page,
       size: this.size
     }).subscribe({
@@ -39,6 +39,7 @@ export class MyBooksComponent implements OnInit{
       }
     });
   }
+
   gotToPage(page: number) {
     this.page = page;
     this.findAllBooks();
@@ -68,22 +69,29 @@ export class MyBooksComponent implements OnInit{
     return this.page === this.bookResponse.totalPages as number - 1;
   }
 
-  borrowBook(book: BookResponse) {
-    this.message = '';
-    this.level = 'success';
-    this.bookService.borrowBook({
+
+  archiveBook(book: BookResponse) {
+    this.bookService.updateArchivedStatus({
       'book-id': book.id as number
     }).subscribe({
       next: () => {
-        this.level = 'success';
-        this.message = 'Book successfully added to your list';
-      },
-      error: (err) => {
-        console.log(err);
-        this.level = 'error';
-        this.message = err.error.error;
+        book.archived = !book.archived;
       }
     });
+  }
+
+  shareBook(book: BookResponse) {
+    this.bookService.updateShareableStatus({
+      'book-id': book.id as number
+    }).subscribe({
+      next: () => {
+        book.shareable = !book.shareable;
+      }
+    });
+  }
+
+  editBook(book: BookResponse) {
+    this.router.navigate(['books', 'manage', book.id]);
   }
 
 }
