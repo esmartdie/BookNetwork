@@ -16,8 +16,7 @@ export class MyBooksComponent implements OnInit{
 
   bookResponse: PageResponseBookResponse = {};
   page:number =  0;
-  size: number = 5;
-  pages: any = [];
+  size: number = 4;
 
   constructor(
     private bookService: BookService, 
@@ -66,7 +65,7 @@ export class MyBooksComponent implements OnInit{
   }
 
   get isLastPage() {
-    return this.page === this.bookResponse.totalPages as number - 1;
+    return this.page == this.bookResponse.totalPages as number - 1;
   }
 
 

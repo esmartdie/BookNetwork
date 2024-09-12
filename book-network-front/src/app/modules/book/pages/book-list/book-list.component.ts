@@ -16,8 +16,7 @@ import { BookCardComponent } from '../../components/book-card/book-card.componen
 export class BookListComponent implements OnInit{
   bookResponse: PageResponseBookResponse = {};
   page:number =  0;
-  size: number = 5;
-  pages: any = [];
+  size: number = 4;
   message: string = '';
   level: 'success' |'error' = 'success';
 
@@ -66,8 +65,8 @@ export class BookListComponent implements OnInit{
     this.findAllBooks();
   }
 
-  get isLastPage() {
-    return this.page === this.bookResponse.totalPages as number - 1;
+  get isLastPage(): boolean {
+    return this.page == this.bookResponse.totalPages as number - 1;
   }
 
   borrowBook(book: BookResponse) {
